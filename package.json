@@ -1,0 +1,10 @@
+{
+  "name": "MODULO01",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Leandro Rocha <prog.leandro@gmail.com> (https://leandrorocha.dev/)",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
