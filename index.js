@@ -6,18 +6,40 @@ server.use(express.json());
 
 const users = ['Leandro', 'Izabela', 'Ilma'];
 
+
+function checkUsersExists( req, res, next ) {
+  
+  if(!req.body.name){
+    return res.status(400).json( { error: 'O nome do usuário é obrigatório'})
+  }
+
+  return next();
+}
+
+function checkUserInArray(  req, res, next) {
+  const user = users[req.params.index];
+  
+  if(!user){
+    return res.status(400).json({ messagem: 'Usuário não encontrado'})
+  }
+
+  req.user = user;
+
+  return next();
+}
+
+
 server.get('/users', (req, res) => {
   return res.json(users);
 });
 
-server.get('/users/:index',(req, res) => {
-  const { index } = req.params;
-
-  return res.json(users[index]);
+server.get('/users/:index', checkUserInArray, (req, res) => {
+  const { user } =  req;
+  return res.json(user);
 });
 
 
-server.post('/users', (req, res) =>  {
+server.post('/users', checkUsersExists,  (req, res) =>  {
   const { name } = req.body;
 
   users.push(name)
@@ -25,27 +47,19 @@ server.post('/users', (req, res) =>  {
   return res.json(users);
 });
 
-server.put('/users/:index', (req, res) => {
+server.put('/users/:index', checkUserInArray, checkUsersExists, (req, res) => {
   
   const { index } = req.params;
-  const { newName } = req.body;
+  const { name } = req.body;
 
-  if(users.length < index){
-    res.status(400).json({ messagem: 'Usuário não encontrado'})
-  }
-
-  users[index] = newName;
+  users[index] = name;
 
   return res.json(users);
 })
 
-server.delete('/users/:index', (req, res) =>{
+server.delete('/users/:index', checkUserInArray, (req, res) =>{
 
   const { index } = req.params;
-
-  if(users.length < index){
-    res.status(400).json({ messagem: 'Usuário não encontrado'})
-  }
 
   users.splice(index, 1);
 
