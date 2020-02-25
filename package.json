@@ -4,7 +4,13 @@
   "main": "index.js",
   "author": "Leandro Rocha <prog.leandro@gmail.com> (https://leandrorocha.dev/)",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
   }
 }
